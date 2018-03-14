@@ -32,6 +32,11 @@ class SM2Utils {
         byte[] c3 = new byte[32];
         cipher.Dofinal(c3);
 
+        String t1 = c1.getX().toBigInteger().toString(16);
+        String t2 = c1.getY().toBigInteger().toString(16);
+        String t3 = Util.byteToHex(source);
+        String t4 = Util.byteToHex(c3);
+
         DERInteger x = new DERInteger(c1.getX().toBigInteger());
         DERInteger y = new DERInteger(c1.getY().toBigInteger());
         DEROctetString derDig = new DEROctetString(c3);
@@ -171,7 +176,7 @@ class SM2Utils {
     }
 
     public static void main(String[] args) throws Exception {
-        String plainText = "message digest";
+        String plainText = "EA4EC352F076A6BE";
         byte[] sourceData = plainText.getBytes();
 
         // 国密规范测试用户ID
@@ -179,26 +184,36 @@ class SM2Utils {
         System.out.println("ID: " + Util.getHexString(userId.getBytes()));
         System.out.println("");
         // 国密规范测试私钥
-        String prik = "128B2FA8BD433C6C068C8D803DFF79792A519A55171B1B650C23661D15897263";
+//        String prik = "128B2FA8BD433C6C068C8D803DFF79792A519A55171B1B650C23661D15897263";
+//        String prikS = new String(Base64.encode(Util.hexToByte(prik)));
+//        System.out.println("prikS: " + prikS);
+//        System.out.println("");
+        // 国密规范测试公钥
+//        String pubk = "040AE4C7798AA0F119471BEE11825BE46202BB79E2A5844495E97C04FF4DF2548A7C0240F88F1CD4E16352A73C17B7F16F07353E53A176D684A9FE0C6BB798E857";
+//        String pubkS = new String(Base64.encode(Util.hexToByte(pubk)));
+//        System.out.println("pubkS: " + pubkS);
+//        System.out.println("");
+        // DLSC 测试私钥
+        String prik = "E7CB09606A53320B347F61F3F142DCB118F723A9BC27879F2805BE778F24AEE5";
         String prikS = new String(Base64.encode(Util.hexToByte(prik)));
         System.out.println("prikS: " + prikS);
         System.out.println("");
-        // 国密规范测试公钥
-        String pubk = "040AE4C7798AA0F119471BEE11825BE46202BB79E2A5844495E97C04FF4DF2548A7C0240F88F1CD4E16352A73C17B7F16F07353E53A176D684A9FE0C6BB798E857";
+        // DLSC 测试公钥
+        String pubk = "04C4F7D581BEFEF25C8BBB6DAD52A6AB8234FA7DB7A988592BC592DAF2BE630647E3746788CBDC59042D85260DD48B6A7347D82C5314E8AC261588A33151DFCA17";
         String pubkS = new String(Base64.encode(Util.hexToByte(pubk)));
         System.out.println("pubkS: " + pubkS);
         System.out.println("");
 
 
-        System.out.println("签名: ");
-        byte[] c = SM2Utils.sign(userId.getBytes(), Base64.decode(prikS.getBytes()), sourceData);
-        System.out.println("sign: " + Util.getHexString(c));
-        System.out.println("");
-
-        System.out.println("验签: ");
-        boolean vs = SM2Utils.verifySign(userId.getBytes(), Base64.decode(pubkS.getBytes()), sourceData, c);
-        System.out.println("验签结果: " + vs);
-        System.out.println("");
+//        System.out.println("签名: ");
+//        byte[] c = SM2Utils.sign(userId.getBytes(), Base64.decode(prikS.getBytes()), sourceData);
+//        System.out.println("sign: " + Util.getHexString(c));
+//        System.out.println("");
+//
+//        System.out.println("验签: ");
+//        boolean vs = SM2Utils.verifySign(userId.getBytes(), Base64.decode(pubkS.getBytes()), sourceData, c);
+//        System.out.println("验签结果: " + vs);
+//        System.out.println("");
 
         System.out.println("加密: ");
         byte[] cipherText = SM2Utils.encrypt(Base64.decode(pubkS.getBytes()), sourceData);

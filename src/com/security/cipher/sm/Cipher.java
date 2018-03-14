@@ -1,8 +1,5 @@
 package com.security.cipher.sm;
 
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
-import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.math.ec.ECPoint;
 
 import java.math.BigInteger;
@@ -47,11 +44,17 @@ class Cipher {
     }
 
     public ECPoint Init_enc(SM2 sm2, ECPoint userKey) {
-        AsymmetricCipherKeyPair key = sm2.ecc_key_pair_generator.generateKeyPair();
-        ECPrivateKeyParameters ecpriv = (ECPrivateKeyParameters) key.getPrivate();
-        ECPublicKeyParameters ecpub = (ECPublicKeyParameters) key.getPublic();
-        BigInteger k = ecpriv.getD();
-        ECPoint c1 = ecpub.getQ();
+//        AsymmetricCipherKeyPair key = sm2.ecc_key_pair_generator.generateKeyPair();
+//        ECPrivateKeyParameters ecpriv = (ECPrivateKeyParameters) key.getPrivate();
+//        ECPublicKeyParameters ecpub = (ECPublicKeyParameters) key.getPublic();
+//        BigInteger k = ecpriv.getD();
+//        ECPoint c1 = ecpub.getQ();
+
+        String kS = "EEA909C9EC64AD96E55415D5100DB39D8B7CB7DA2D30E96DCF887E6291BEAD0D";
+        BigInteger k = new BigInteger(kS, 16);
+        ECPoint c1 = sm2.ecc_point_g.multiply(k);
+
+
         this.p2 = userKey.multiply(k);
         Reset();
         return c1;
