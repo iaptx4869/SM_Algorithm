@@ -3,20 +3,21 @@ package com.security.cipher.sm;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class SM4Utils {
+public class SM4Utils {
     private String secretKey = "";
 
     private String iv = "";
 
     private boolean hexString = false;
 
-    private SM4Utils() {
+    public SM4Utils() {
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String plainText = "abcd";
 
         SM4Utils sm4 = new SM4Utils();
@@ -42,7 +43,7 @@ class SM4Utils {
         System.out.println("明文: " + plainText);
     }
 
-    private String encryptData_ECB(String plainText) {
+    public String encryptData_ECB(String plainText) {
         try {
             SM4_Context ctx = new SM4_Context();
             ctx.isPadding = true;
@@ -71,7 +72,7 @@ class SM4Utils {
         }
     }
 
-    private String decryptData_ECB(String cipherText) {
+    public String decryptData_ECB(String cipherText) {
         try {
             SM4_Context ctx = new SM4_Context();
             ctx.isPadding = true;
@@ -94,7 +95,7 @@ class SM4Utils {
         }
     }
 
-    private String encryptData_CBC(String plainText) {
+    public String encryptData_CBC(String plainText) {
         try {
             SM4_Context ctx = new SM4_Context();
             ctx.isPadding = true;
@@ -126,7 +127,7 @@ class SM4Utils {
         }
     }
 
-    private String decryptData_CBC(String cipherText) {
+    public String decryptData_CBC(String cipherText) {
         try {
             SM4_Context ctx = new SM4_Context();
             ctx.isPadding = true;

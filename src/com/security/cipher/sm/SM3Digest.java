@@ -2,7 +2,7 @@ package com.security.cipher.sm;
 
 import org.bouncycastle.util.encoders.Hex;
 
-class SM3Digest {
+public class SM3Digest {
     /**
      * SM3值的长度
      */
@@ -16,12 +16,12 @@ class SM3Digest {
     /**
      * 缓冲区长度
      */
-    private static final int BUFFER_LENGTH = BLOCK_LENGTH;
+    private static final int BUFFER_LENGTH = BLOCK_LENGTH * 1;
 
     /**
      * 缓冲区
      */
-    private final byte[] xBuf = new byte[BUFFER_LENGTH];
+    private byte[] xBuf = new byte[BUFFER_LENGTH];
 
     /**
      * 缓冲区偏移量
@@ -42,16 +42,6 @@ class SM3Digest {
         System.arraycopy(t.xBuf, 0, this.xBuf, 0, t.xBuf.length);
         this.xBufOff = t.xBufOff;
         System.arraycopy(t.V, 0, this.V, 0, t.V.length);
-    }
-
-    public static void main(String[] args) {
-        byte[] md = new byte[32];
-        byte[] msg1 = "abc".getBytes();
-        SM3Digest sm3 = new SM3Digest();
-        sm3.update(msg1, 0, msg1.length);
-        sm3.doFinal(md, 0);
-        String s = new String(Hex.encode(md));
-        System.out.println(s);
     }
 
     /**
@@ -135,5 +125,19 @@ class SM3Digest {
 
     public int getDigestSize() {
         return BYTE_LENGTH;
+    }
+
+    public static void main(String[] args) {
+//        byte[] md = new byte[32];
+//        byte[] msg1 = "abc".getBytes();
+        // DLSC
+        byte[] md = new byte[61];
+        byte[] msg1 = Util.hexToByte("2F917420E702DBA970C071AE4971AD08DE3D7D0D90DC1E334ED20444E54F109BA80DD22F25C24FAA83D5AD58687F1AA68F1B749D0AD999DB9A1AC8E4DC");
+
+        SM3Digest sm3 = new SM3Digest();
+        sm3.update(msg1, 0, msg1.length);
+        sm3.doFinal(md, 0);
+        String s = new String(Hex.encode(md));
+        System.out.println(s);
     }
 }

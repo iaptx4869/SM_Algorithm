@@ -1,6 +1,7 @@
 package com.security.cipher.sm;
 
-class SM3 {
+
+public class SM3 {
 	/*public static final byte[] iv = { 0x2C, (byte) 0x91, (byte) 0xB4, 0x01,
 			(byte) 0xFC, 0x64, (byte) 0xB2, (byte) 0xCE, 0x7C, 0x4E,
 			(byte) 0xAE, (byte) 0xFB, (byte) 0xB1, 0x3B, (byte) 0xB6,
@@ -15,7 +16,7 @@ class SM3 {
             (byte) 0x8d, (byte) 0xee, 0x4d, (byte) 0xb0, (byte) 0xfb, 0x0e,
             0x4e};
 
-    private static final int[] Tj = new int[64];
+    public static int[] Tj = new int[64];
 
     static {
         for (int i = 0; i < 16; i++) {
@@ -46,7 +47,7 @@ class SM3 {
 
     private static byte[] convert(int[] arr) {
         byte[] out = new byte[arr.length * 4];
-        byte[] tmp;
+        byte[] tmp = null;
         for (int i = 0; i < arr.length; i++) {
             tmp = bigEndianIntToByte(arr[i]);
             System.arraycopy(tmp, 0, out, i * 4, 4);
@@ -54,7 +55,7 @@ class SM3 {
         return out;
     }
 
-    private static int[] CF(int[] V, int[] B) {
+    public static int[] CF(int[] V, int[] B) {
         int a, b, c, d, e, f, g, h;
         int ss1, ss2, tt1, tt2;
         a = V[0];
@@ -65,8 +66,8 @@ class SM3 {
         f = V[5];
         g = V[6];
         h = V[7];
-		
-		/*System.out.println("IV: "); 
+
+		/*System.out.println("IV: ");
 		System.out.print(Integer.toHexString(a)+" ");
 		System.out.print(Integer.toHexString(b)+" ");
 		System.out.print(Integer.toHexString(c)+" ");
@@ -74,14 +75,14 @@ class SM3 {
 		System.out.print(Integer.toHexString(e)+" ");
 		System.out.print(Integer.toHexString(f)+" ");
 		System.out.print(Integer.toHexString(g)+" ");
-		System.out.print(Integer.toHexString(h)+" "); 
+		System.out.print(Integer.toHexString(h)+" ");
 		System.out.println("");
 		System.out.println("");
-		 
-		System.out.println("填充后的消息: "); 
-		for(int i=0; i<B.length; i++) 
+
+		System.out.println("填充后的消息: ");
+		for(int i=0; i<B.length; i++)
 		{
-			System.out.print(Integer.toHexString(B[i])+" "); 
+			System.out.print(Integer.toHexString(B[i])+" ");
 		}
 		System.out.println("");
 		System.out.println("");*/
@@ -89,10 +90,10 @@ class SM3 {
         int[][] arr = expand(B);
         int[] w = arr[0];
         int[] w1 = arr[1];
-		
+
 		/*System.out.println("扩展后的消息： ");
-		System.out.println("W0W1...W67"); 
-		print(w); 
+		System.out.println("W0W1...W67");
+		print(w);
 		System.out.println("");
 		System.out.println("W'0W'1...W'67");
 		print(w1);
@@ -142,7 +143,9 @@ class SM3 {
     private static int[][] expand(int[] B) {
         int W[] = new int[68];
         int W1[] = new int[64];
-        System.arraycopy(B, 0, W, 0, B.length);
+        for (int i = 0; i < B.length; i++) {
+            W[i] = B[i];
+        }
 
         for (int i = 16; i < 68; i++) {
             W[i] = P1(W[i - 16] ^ W[i - 9] ^ bitCycleLeft(W[i - 3], 15))
@@ -153,7 +156,8 @@ class SM3 {
             W1[i] = W[i] ^ W[i + 4];
         }
 
-        return new int[][]{W, W1};
+        int arr[][] = new int[][]{W, W1};
+        return arr;
     }
 
     private static byte[] bigEndianIntToByte(int num) {
@@ -182,31 +186,37 @@ class SM3 {
 
     // 逻辑位运算函数
     private static int FF1j(int X, int Y, int Z) {
-        return X ^ Y ^ Z;
+        int tmp = X ^ Y ^ Z;
+        return tmp;
     }
 
     private static int FF2j(int X, int Y, int Z) {
-        return ((X & Y) | (X & Z) | (Y & Z));
+        int tmp = ((X & Y) | (X & Z) | (Y & Z));
+        return tmp;
     }
 
     private static int GG1j(int X, int Y, int Z) {
-        return X ^ Y ^ Z;
+        int tmp = X ^ Y ^ Z;
+        return tmp;
     }
 
     private static int GG2j(int X, int Y, int Z) {
-        return (X & Y) | (~X & Z);
+        int tmp = (X & Y) | (~X & Z);
+        return tmp;
     }
 
     private static int P0(int X) {
-        int y;
+        int y = rotateLeft(X, 9);
         y = bitCycleLeft(X, 9);
-        int z;
+        int z = rotateLeft(X, 17);
         z = bitCycleLeft(X, 17);
-        return X ^ y ^ z;
+        int t = X ^ y ^ z;
+        return t;
     }
 
     private static int P1(int X) {
-        return X ^ bitCycleLeft(X, 15) ^ bitCycleLeft(X, 23);
+        int t = X ^ bitCycleLeft(X, 15) ^ bitCycleLeft(X, 23);
+        return t;
     }
 
     /**
@@ -251,7 +261,7 @@ class SM3 {
         return out;
     }
 
-    private static int rotateLeft(int x, int n) {
+    public static int rotateLeft(int x, int n) {
         return (x << n) | (x >> (32 - n));
     }
 
@@ -290,13 +300,13 @@ class SM3 {
         System.arraycopy(in, 0, tmp, in.length - byteLen, byteLen);
         return tmp;
     }
-	
+
 	/*private static void print(int[] arr)
 	{
 		for (int i = 0; i < arr.length; i++)
 		{
 			System.out.print(Integer.toHexString(arr[i]) + " ");
-			if ((i + 1) % 16 == 0) 
+			if ((i + 1) % 16 == 0)
 			{
 				System.out.println();
 			}

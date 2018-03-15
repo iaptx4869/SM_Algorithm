@@ -4,12 +4,12 @@ import org.bouncycastle.math.ec.ECPoint;
 
 import java.math.BigInteger;
 
-class Cipher {
-    private final byte[] key;
+public class Cipher {
     private int ct;
     private ECPoint p2;
     private SM3Digest sm3keybase;
     private SM3Digest sm3c3;
+    private byte key[];
     private byte keyOff;
 
     public Cipher() {
@@ -50,10 +50,10 @@ class Cipher {
 //        BigInteger k = ecpriv.getD();
 //        ECPoint c1 = ecpub.getQ();
 
+        //DLSC
         String kS = "EEA909C9EC64AD96E55415D5100DB39D8B7CB7DA2D30E96DCF887E6291BEAD0D";
         BigInteger k = new BigInteger(kS, 16);
         ECPoint c1 = sm2.ecc_point_g.multiply(k);
-
 
         this.p2 = userKey.multiply(k);
         Reset();

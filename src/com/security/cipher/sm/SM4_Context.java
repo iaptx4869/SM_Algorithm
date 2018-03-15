@@ -1,8 +1,10 @@
 package com.security.cipher.sm;
 
-class SM4_Context {
-    public final long[] sk;
+public class SM4_Context {
     public int mode;
+
+    public long[] sk;
+
     public boolean isPadding;
 
     public SM4_Context() {

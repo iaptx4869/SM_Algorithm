@@ -1,8 +1,11 @@
 package com.security.cipher.sm;
 
+import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.generators.ECKeyPairGenerator;
 import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.bouncycastle.crypto.params.ECKeyGenerationParameters;
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
+import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.math.ec.ECCurve;
 import org.bouncycastle.math.ec.ECFieldElement;
 import org.bouncycastle.math.ec.ECFieldElement.Fp;
@@ -12,8 +15,8 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class SM2 {
-    // 测试参数
-//    private static final String[] ecc_param = {
+//    // 测试参数
+//    public static final String[] ecc_param = {
 //            "8542D69E4C044F18E8B92435BF6FF7DE457283915C45517D722EDB8B08F1DFC3",
 //            "787968B4FA32C3FD2417842E73BBFEFF2F3C848B6831D7E0EC65228B3937E498",
 //            "63E4C6D3B23B0C849CF84241484BFE48F61D59A5B16BA06E6E12D1DA27C5249A",
@@ -31,20 +34,21 @@ public class SM2 {
             "32C4AE2C1F1981195F9904466A39C9948FE30BBFF2660BE1715A4589334C74C7",
             "BC3736A2F4F6779C59BDCEE36B692153D0A9877CC62A474002DF32E52139F0A0"
     };
+
+    public final BigInteger ecc_p;
+    public final BigInteger ecc_a;
+    public final BigInteger ecc_b;
+    public final BigInteger ecc_n;
+    public final BigInteger ecc_gx;
+    public final BigInteger ecc_gy;
+    public final ECDomainParameters ecc_bc_spec;
     public final ECCurve ecc_curve;
     public final ECPoint ecc_point_g;
+    public final ECFieldElement ecc_gx_fieldelement;
     public final ECKeyPairGenerator ecc_key_pair_generator;
-    private final BigInteger ecc_p;
-    private final BigInteger ecc_a;
-    private final BigInteger ecc_b;
-    private final BigInteger ecc_n;
-    private final BigInteger ecc_gx;
-    private final BigInteger ecc_gy;
-    private final ECDomainParameters ecc_bc_spec;
-    private final ECFieldElement ecc_gx_fieldelement;
-    private final ECFieldElement ecc_gy_fieldelement;
+    public final ECFieldElement ecc_gy_fieldelement;
 
-    private SM2() {
+    public SM2() {
         this.ecc_p = new BigInteger(ecc_param[0], 16);
         this.ecc_a = new BigInteger(ecc_param[1], 16);
         this.ecc_b = new BigInteger(ecc_param[2], 16);
@@ -104,33 +108,28 @@ public class SM2 {
 
     public void sm2Sign(byte[] md, BigInteger userD, ECPoint userKey, SM2Result sm2Result) {
         BigInteger e = new BigInteger(1, md);
-        BigInteger k;
-        ECPoint kp;
-        BigInteger r;
-        BigInteger s;
+        BigInteger k = null;
+        ECPoint kp = null;
+        BigInteger r = null;
+        BigInteger s = null;
         do {
             do {
                 // 正式环境
-				/*AsymmetricCipherKeyPair keypair = ecc_key_pair_generator.generateKeyPair();
-				ECPrivateKeyParameters ecpriv = (ECPrivateKeyParameters) keypair.getPrivate();
-				ECPublicKeyParameters ecpub = (ECPublicKeyParameters) keypair.getPublic();
-				k = ecpriv.getD();
-				kp = ecpub.getQ();*/
+                AsymmetricCipherKeyPair keypair = ecc_key_pair_generator.generateKeyPair();
+                ECPrivateKeyParameters ecpriv = (ECPrivateKeyParameters) keypair.getPrivate();
+                ECPublicKeyParameters ecpub = (ECPublicKeyParameters) keypair.getPublic();
+                k = ecpriv.getD();
+                kp = ecpub.getQ();
 
-                // 国密规范测试 随机数k
-                //String kS = "6CB28D99385C175C94F94E934817663FC176D925DD72B727260DBAAE1FB2F96F";
-
-                // DLSC 随机数k
-                String kS = "EEA909C9EC64AD96E55415D5100DB39D8B7CB7DA2D30E96DCF887E6291BEAD0D";
-
-                k = new BigInteger(kS, 16);
-                kp = this.ecc_point_g.multiply(k);
+//                // 国密规范测试 随机数k
+//                String kS = "6CB28D99385C175C94F94E934817663FC176D925DD72B727260DBAAE1FB2F96F";
+//                k = new BigInteger(kS, 16);
+//                kp = this.ecc_point_g.multiply(k);
 
                 System.out.println("计算曲线点X1: " + kp.getX().toBigInteger().toString(16));
                 System.out.println("计算曲线点Y1: " + kp.getY().toBigInteger().toString(16));
                 System.out.println("");
 
-                // r
                 r = e.add(kp.getX().toBigInteger());
                 r = r.mod(ecc_n);
             } while (r.equals(BigInteger.ZERO) || r.add(k).equals(ecc_n));
@@ -154,6 +153,7 @@ public class SM2 {
         BigInteger e = new BigInteger(1, md);
         BigInteger t = r.add(s).mod(ecc_n);
         if (t.equals(BigInteger.ZERO)) {
+            return;
         } else {
             ECPoint x1y1 = ecc_point_g.multiply(sm2Result.s);
             System.out.println("计算曲线点X0: " + x1y1.getX().toBigInteger().toString(16));
@@ -166,6 +166,7 @@ public class SM2 {
             System.out.println("");
             sm2Result.R = e.add(x1y1.getX().toBigInteger()).mod(ecc_n);
             System.out.println("R: " + sm2Result.R.toString(16));
+            return;
         }
     }
 }
