@@ -122,13 +122,13 @@ public class SM2 {
                 kp = ecpub.getQ();
 
 //                // 国密规范测试 随机数k
-//                String kS = "6CB28D99385C175C94F94E934817663FC176D925DD72B727260DBAAE1FB2F96F";
-//                k = new BigInteger(kS, 16);
-//                kp = this.ecc_point_g.multiply(k);
+                String kS = "4C62EEFD6ECFC2B95B92FD6C3D9575148AFA17425546D49018E5388D49DD7B4F";
+//                String kS = "EEA909C9EC64AD96E55415D5100DB39D8B7CB7DA2D30E96DCF887E6291BEAD0D";
+                k = new BigInteger(kS, 16);
+                kp = this.ecc_point_g.multiply(k);
 
-                System.out.println("计算曲线点X1: " + kp.getX().toBigInteger().toString(16));
-                System.out.println("计算曲线点Y1: " + kp.getY().toBigInteger().toString(16));
-                System.out.println("");
+//                System.out.println("计算曲线点X1: " + kp.getX().toBigInteger().toString(16));
+//                System.out.println("计算曲线点Y1: " + kp.getY().toBigInteger().toString(16));
 
                 r = e.add(kp.getX().toBigInteger());
                 r = r.mod(ecc_n);
@@ -156,16 +156,13 @@ public class SM2 {
             return;
         } else {
             ECPoint x1y1 = ecc_point_g.multiply(sm2Result.s);
-            System.out.println("计算曲线点X0: " + x1y1.getX().toBigInteger().toString(16));
-            System.out.println("计算曲线点Y0: " + x1y1.getY().toBigInteger().toString(16));
-            System.out.println("");
-
+//            System.out.println("计算曲线点X0: " + x1y1.getX().toBigInteger().toString(16));
+//            System.out.println("计算曲线点Y0: " + x1y1.getY().toBigInteger().toString(16));
             x1y1 = x1y1.add(userKey.multiply(t));
-            System.out.println("计算曲线点X1: " + x1y1.getX().toBigInteger().toString(16));
-            System.out.println("计算曲线点Y1: " + x1y1.getY().toBigInteger().toString(16));
-            System.out.println("");
+//            System.out.println("计算曲线点X1: " + x1y1.getX().toBigInteger().toString(16));
+//            System.out.println("计算曲线点Y1: " + x1y1.getY().toBigInteger().toString(16));
             sm2Result.R = e.add(x1y1.getX().toBigInteger()).mod(ecc_n);
-            System.out.println("R: " + sm2Result.R.toString(16));
+//            System.out.println("R: " + sm2Result.R.toString(16));
             return;
         }
     }

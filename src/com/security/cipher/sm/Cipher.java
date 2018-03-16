@@ -50,7 +50,7 @@ public class Cipher {
 //        BigInteger k = ecpriv.getD();
 //        ECPoint c1 = ecpub.getQ();
 
-        //DLSC
+//        String kS = "4C62EEFD6ECFC2B95B92FD6C3D9575148AFA17425546D49018E5388D49DD7B4F";
         String kS = "EEA909C9EC64AD96E55415D5100DB39D8B7CB7DA2D30E96DCF887E6291BEAD0D";
         BigInteger k = new BigInteger(kS, 16);
         ECPoint c1 = sm2.ecc_point_g.multiply(k);

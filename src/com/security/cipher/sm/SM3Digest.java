@@ -1,7 +1,5 @@
 package com.security.cipher.sm;
 
-import org.bouncycastle.util.encoders.Hex;
-
 public class SM3Digest {
     /**
      * SM3值的长度
@@ -129,15 +127,31 @@ public class SM3Digest {
 
     public static void main(String[] args) {
 //        byte[] md = new byte[32];
-//        byte[] msg1 = "abc".getBytes();
-        // DLSC
-        byte[] md = new byte[61];
-        byte[] msg1 = Util.hexToByte("2F917420E702DBA970C071AE4971AD08DE3D7D0D90DC1E334ED20444E54F109BA80DD22F25C24FAA83D5AD58687F1AA68F1B749D0AD999DB9A1AC8E4DC");
+//        byte[] msg = "abc".getBytes();
+//        SM3Digest sm3 = new SM3Digest();
+//        sm3.update(msg, 0, msg.length);
+//        sm3.doFinal(md, 0);
+//        System.out.println(new String(Hex.encode(md)));
 
-        SM3Digest sm3 = new SM3Digest();
-        sm3.update(msg1, 0, msg1.length);
-        sm3.doFinal(md, 0);
-        String s = new String(Hex.encode(md));
-        System.out.println(s);
+        byte[] md_1 = new byte[32];
+        byte[] msg_1 = Util.hexToByte("2F917420E702DBA970C071AE4971AD08DE3D7D0D90DC1E334ED20444E54F109BA80DD22F25C24FAA83D5AD58687F1AA68F1B749D0AD999DB9A1AC8E4DC");
+        SM3Digest sm3_1 = new SM3Digest();
+        sm3_1.update(msg_1, 0, msg_1.length);
+        sm3_1.doFinal(md_1, 0);
+        System.out.println(Util.byteToHex(md_1));
+
+        byte[] md_2 = new byte[32];
+        byte[] msg_2 = Util.hexToByte("2F917420E702DBA970C071AE4971AD08DE3D7D0D90DC1E334ED20444E54F109BA80DD22F25C24FAA83D5AD58687F1AA68F1B749D0AD999");
+        SM3Digest sm3_2 = new SM3Digest();
+        sm3_2.update(msg_2, 0, msg_2.length);
+        sm3_2.doFinal(md_2, 0);
+        System.out.println(Util.byteToHex(md_2));
+
+        byte[] md_3 = new byte[32];
+        byte[] msg_3 = Util.hexToByte("E47F211542C022AC94542DE4EEC6A1B10BF54B6A9F3C439459F4D9779C4BE5326AEA06FF6EEE97F61E66978DFA8543D1520103CDA6AB7655B592BF2D40ECB937");
+        SM3Digest sm3_3 = new SM3Digest();
+        sm3_3.update(msg_3, 0, msg_3.length);
+        sm3_3.doFinal(md_3, 0);
+        System.out.println(Util.byteToHex(md_3));
     }
 }

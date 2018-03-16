@@ -45,7 +45,7 @@ public class SM4Utils {
 
     public String encryptData_ECB(String plainText) {
         try {
-            SM4_Context ctx = new SM4_Context();
+            SM4Context ctx = new SM4Context();
             ctx.isPadding = true;
             ctx.mode = SM4.SM4_ENCRYPT;
 
@@ -74,7 +74,7 @@ public class SM4Utils {
 
     public String decryptData_ECB(String cipherText) {
         try {
-            SM4_Context ctx = new SM4_Context();
+            SM4Context ctx = new SM4Context();
             ctx.isPadding = true;
             ctx.mode = SM4.SM4_DECRYPT;
 
@@ -97,7 +97,7 @@ public class SM4Utils {
 
     public String encryptData_CBC(String plainText) {
         try {
-            SM4_Context ctx = new SM4_Context();
+            SM4Context ctx = new SM4Context();
             ctx.isPadding = true;
             ctx.mode = SM4.SM4_ENCRYPT;
 
@@ -129,7 +129,7 @@ public class SM4Utils {
 
     public String decryptData_CBC(String cipherText) {
         try {
-            SM4_Context ctx = new SM4_Context();
+            SM4Context ctx = new SM4Context();
             ctx.isPadding = true;
             ctx.mode = SM4.SM4_DECRYPT;
 
